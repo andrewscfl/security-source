@@ -52,5 +52,13 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "resolutions": {
+    "vue-cli-plugin-electron-builder/electron-builder": "^23.0.3"
+  },
+  "author": {
+    "name": "Test",
+    "email": "test@test.com",
+    "url": "http://test.com"
+  }
 }
