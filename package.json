@@ -14,6 +14,7 @@
   "main": "background.js",
   "dependencies": {
     "core-js": "^3.8.3",
+    "node-nmap": "^4.0.0",
     "pinia": "^2.0.22",
     "vue": "^2.6.14",
     "vue-router": "3",
@@ -62,5 +63,12 @@
     "name": "Test",
     "email": "test@test.com",
     "url": "http://test.com"
+  },
+  "electronWebpack": {
+    "main": {
+      "extraEntries": [
+        "./src/preload.js"
+      ]
+    }
   }
 }

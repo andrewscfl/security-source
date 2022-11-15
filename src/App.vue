@@ -1,7 +1,7 @@
 <template>
   <v-app app>
     <side-bar />
-    <application-header/>
+    <application-header />
     <v-main app>
       <router-view></router-view>
     </v-main>
@@ -19,3 +19,21 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.gradient-bg {
+  background: linear-gradient(
+    180deg,
+    #9df378e7 9.52%,
+    rgba(39, 115, 228, 0.46) 94.58%
+  );
+}
+.gradient-text {
+  background: -webkit-linear-gradient(
+    180deg,
+    #7ddf53 9.52%,
+    rgba(39, 115, 228, 0.855) 94.58%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+</style>
