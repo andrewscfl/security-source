@@ -8,8 +8,6 @@ contextBridge.exposeInMainWorld("api", {
         ipcRenderer.send("start-nmap-scan", args);
     },
     onNmapScanFinish: function (func) {
-        {
-            ipcRenderer.on("finish-nmap-scan", (event, ...args) => func(event, ...args));
-        }
+        ipcRenderer.on("finish-nmap-scan", (event, ...args) => func(event, ...args));
     }
 });

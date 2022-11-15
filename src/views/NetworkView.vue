@@ -3,18 +3,17 @@
     <v-container>
       <v-card class="mb-5">
         <v-toolbar flat class="grey lighten-4">
-            <div class="d-flex justify-space-between fill-width">
-                <div>
-                  <h1 class="ma-0 pa-0 gradient-text">Scan A Network</h1>
-                </div>
-                <div>
-                  <v-icon>mdi-information-outline</v-icon>
-                </div>
-              </div>
+          <div class="d-flex justify-space-between fill-width">
+            <div>
+              <h1 class="ma-0 pa-0 gradient-text">Scan A Network</h1>
+            </div>
+            <div>
+              <v-icon>mdi-information-outline</v-icon>
+            </div>
+          </div>
         </v-toolbar>
         <v-card-text>
           <v-row>
-           
             <v-col cols="6">
               <v-text-field
                 outlined
@@ -56,9 +55,7 @@
       </v-card>
       <v-card class="mb-5">
         <v-toolbar flat class="grey lighten-4">
-          
-            <h1 class="ma-0 pa-0 gradient-text">Scan Results</h1>
-          
+          <h1 class="ma-0 pa-0 gradient-text">Scan Results</h1>
         </v-toolbar>
         <v-tabs vertical>
           <v-tab>
@@ -167,23 +164,30 @@
 </template>
 
 <script>
-
 export default {
-    data:() => ({
-        target: '',
-        type: 0
-    }),
-    mounted(){
-        this.bindIpcListeners()
+  data: () => ({
+    scan: {
+      target: "",
+      type: 0,
     },
-    methods: {
-        startScan(){
-            
-        },
-        bindIpcListeners(){
-            window.api.startNmapScan({ test: 'test '})
-        }
-    }
+    loading: false
+  }),
+  mounted() {
+    this.bindIpcListeners();
+  },
+  methods: {
+    startScan() {
+      this.loading = true;
+      window.api.startNmapScan({
+        ...this.scan
+      });
+    },
+    bindIpcListeners() {
+      window.api.onNmapScanFinish((event, args) => {
+        console.log(args);
+      });
+    },
+  },
 };
 </script>
 
