@@ -26,11 +26,30 @@
 <script>
 import StatisticCard from "@/components/Global/StatisticCard.vue";
 import EventsTable from "@/components/Global/EventsTable.vue";
+import Requests from '../utils/requests'
 export default {
   components: {
     StatisticCard,
     EventsTable,
   },
+  mounted(){
+    this.getInfo()
+  },
+  methods: {
+    async getInfo(){
+      try {
+        console.log('running get info')
+        const requests = new Requests()
+        const result = await requests.get('/api/phishing/active-phishing-campaigns')
+        console.log(result)
+      } catch (error) {
+        //run if key expires
+        console.log('ERRO BLOCK BEING RUn')
+        window.dispatchEvent(new CustomEvent('key-expired'))
+        console.log(error)
+      }
+    }
+  }
 };
 </script>
 
