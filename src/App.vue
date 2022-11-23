@@ -29,19 +29,19 @@ export default {
     token: null,
   }),
   mounted() {
-    // //remove after initial mutate
+    //remove after initial mutate
     // localStorage.setItem('token','lolfaketoken')
-    // //remove after intial mutate
+    //remove after intial mutate
     this.getToken();
-    this.bindExpireWatcher();
+    this.bindLogoutWatcher();
   },
   methods: {
     getToken() {
       const hasToken = localStorage.getItem("token") !== "undefined";
       this.token = hasToken ? localStorage.getItem("token") : null;
     },
-    bindExpireWatcher() {
-      window.addEventListener("key-expired", () => {
+    bindLogoutWatcher() {
+      window.addEventListener("logout", () => {
         console.log('RAN IN WATCHER')
         localStorage.removeItem("token");
         this.getToken();

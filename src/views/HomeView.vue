@@ -44,9 +44,8 @@ export default {
         console.log(result)
       } catch (error) {
         //run if key expires
-        console.log('ERRO BLOCK BEING RUn')
-        window.dispatchEvent(new CustomEvent('key-expired'))
-        console.log(error)
+        Requests.logout()
+        
       }
     }
   }
