@@ -74,14 +74,12 @@ app.on('ready', async () => {
   ipcMain.on('start-nmap-scan', async (event, args) => {
     // invoke nmap scan on main thread
     try {
-      console.log(args)
       const { target, type } = args
       if (!target || type === undefined) throw new Error("no target or type");
       const result = await handleFullScan(target)
-      console.log('----- RESULT ------')
       event.sender.send('finish-nmap-scan', result)
     } catch (error) {
-      console.log('THROW ERROR')
+
       console.log(error)
     }
 
