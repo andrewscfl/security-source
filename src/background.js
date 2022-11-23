@@ -4,7 +4,8 @@ import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
-import { handleFullScan } from '../utils/nmap'
+import nmap from 'node-nmap'
+
 
 
 // Scheme must be registered before the app is ready
@@ -78,7 +79,7 @@ app.on('ready', async () => {
       if (!target || type === undefined) throw new Error("no target or type");
       const result = await handleFullScan(target)
       console.log('----- RESULT ------')
-      console.log(result)
+      event.sender.send('finish-nmap-scan', result)
     } catch (error) {
       console.log('THROW ERROR')
       console.log(error)
@@ -109,4 +110,16 @@ if (isDevelopment) {
       app.quit()
     })
   }
+}
+
+
+
+// custom IPC functions 
+function handleFullScan(host) {
+  return new Promise((res, rej) => {
+    console.log('BEGINNING SCAN')
+    const scanner = new nmap.NmapScan(host, '-A -Pn')
+    scanner.on('complete', (data) => res(data))
+    scanner.on('error', (error) => rej(error))
+  })
 }

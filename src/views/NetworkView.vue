@@ -1,14 +1,21 @@
 <template>
   <div class="pa-5">
     <v-container>
+      <v-alert border="left" color="error" dark>
+        <div class="d-flex">
+          <div><v-icon class="mr-2">mdi-information-outline</v-icon></div>
+          <div>
+            Scanning a network you do not own without permission could be
+            against the law, ensure you have proper permissions before scanning
+            any network you do not own
+          </div>
+        </div>
+      </v-alert>
       <v-card class="mb-5">
         <v-toolbar flat class="grey lighten-4 fill-width">
           <div class="d-flex justify-space-between fill-width">
             <div>
               <h1 class="ma-0 pa-0 gradient-text">Scan A Network</h1>
-            </div>
-            <div>
-              <v-icon>mdi-information-outline</v-icon>
             </div>
           </div>
         </v-toolbar>
@@ -55,23 +62,22 @@
             class="gradient-bg white--text font-weight-black"
             large
             @click="startScan"
+            :loading="loading"
+            :disabled="loading"
             >Scan Network</v-btn
           >
         </v-card-actions>
       </v-card>
-      <v-card class="mb-5">
+      <v-card class="mb-5" min-height="500px">
         <v-toolbar flat class="grey lighten-4">
           <h1 class="ma-0 pa-0 gradient-text">Scan Results</h1>
         </v-toolbar>
-        <v-tabs vertical class="text-left">
+        <v-tabs vertical class="text-left" v-if="result">
           <v-tab>
             <v-icon left> mdi-server-network </v-icon>
             Scan Results
           </v-tab>
-          <v-tab>
-            <v-icon left> mdi-console </v-icon>
-            Console Output
-          </v-tab>
+
           <v-tab>
             <v-icon left> mdi-information-outline </v-icon>
             Suggestions
@@ -80,90 +86,56 @@
           <v-tab-item>
             <v-card flat>
               <v-card-text>
-                <p>
-                  Sed aliquam ultrices mauris. Donec posuere vulputate arcu.
-                  Morbi ac felis. Etiam feugiat lorem non metus. Sed a libero.
-                </p>
-
-                <p>
-                  Nam ipsum risus, rutrum vitae, vestibulum eu, molestie vel,
-                  lacus. Aenean tellus metus, bibendum sed, posuere ac, mattis
-                  non, nunc. Aliquam lobortis. Aliquam lobortis. Suspendisse non
-                  nisl sit amet velit hendrerit rutrum.
-                </p>
-
-                <p class="mb-0">
-                  Phasellus dolor. Fusce neque. Fusce fermentum odio nec arcu.
-                  Pellentesque libero tortor, tincidunt et, tincidunt eget,
-                  semper nec, quam. Phasellus blandit leo ut odio.
-                </p>
+                <template v-if="result && Array.isArray(result)">
+                  <div v-for="(item, idx) in result" :key="idx">
+                    <v-alert text color="info">
+                      <h3 class="mb-0 pb-0" v-if="item && item.ip">
+                        Scan report:
+                        <span class="font-weight-bold">{{ item.ip }}</span>
+                      </h3>
+                      <p v-if="item && item.hostname">
+                        hostname:
+                        <span class="font-weight-bold">{{
+                          item.hostname
+                        }}</span>
+                      </p>
+                      <template
+                        v-if="item.openPorts && Array.isArray(item.openPorts)"
+                      >
+                        <v-data-table
+                          :headers="portHeaders"
+                          :items="item.openPorts"
+                          hide-default-footer
+                          class="elevation-0"
+                        >
+                          <template #[`item.port`]="{ item }">
+                            <div class="d-flex">
+                              <div class="mr-2 d-flex justify-center align-center">
+                                <div class="port-icon"></div>
+                              </div>
+                              <div>{{item.port}}</div>
+                            </div>
+                          </template>
+                        </v-data-table>
+                      </template>
+                    </v-alert>
+                  </div>
+                </template>
               </v-card-text>
             </v-card>
           </v-tab-item>
           <v-tab-item>
             <v-card flat>
-              <v-card-text>
-                <p>
-                  Morbi nec metus. Suspendisse faucibus, nunc et pellentesque
-                  egestas, lacus ante convallis tellus, vitae iaculis lacus elit
-                  id tortor. Sed mollis, eros et ultrices tempus, mauris ipsum
-                  aliquam libero, non adipiscing dolor urna a orci. Curabitur
-                  ligula sapien, tincidunt non, euismod vitae, posuere
-                  imperdiet, leo. Nunc sed turpis.
-                </p>
-
-                <p>
-                  Suspendisse feugiat. Suspendisse faucibus, nunc et
-                  pellentesque egestas, lacus ante convallis tellus, vitae
-                  iaculis lacus elit id tortor. Proin viverra, ligula sit amet
-                  ultrices semper, ligula arcu tristique sapien, a accumsan nisi
-                  mauris ac eros. In hac habitasse platea dictumst. Fusce ac
-                  felis sit amet ligula pharetra condimentum.
-                </p>
-
-                <p>
-                  Sed consequat, leo eget bibendum sodales, augue velit cursus
-                  nunc, quis gravida magna mi a libero. Nam commodo suscipit
-                  quam. In consectetuer turpis ut velit. Sed cursus turpis vitae
-                  tortor. Aliquam eu nunc.
-                </p>
-
-                <p>
-                  Etiam ut purus mattis mauris sodales aliquam. Ut varius
-                  tincidunt libero. Aenean viverra rhoncus pede. Duis leo. Fusce
-                  fermentum odio nec arcu.
-                </p>
-
-                <p class="mb-0">
-                  Donec venenatis vulputate lorem. Aenean viverra rhoncus pede.
-                  In dui magna, posuere eget, vestibulum et, tempor auctor,
-                  justo. Fusce commodo aliquam arcu. Suspendisse enim turpis,
-                  dictum sed, iaculis a, condimentum nec, nisi.
-                </p>
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
-          <v-tab-item>
-            <v-card flat>
-              <v-card-text>
-                <p>
-                  Fusce a quam. Phasellus nec sem in justo pellentesque
-                  facilisis. Nam eget dui. Proin viverra, ligula sit amet
-                  ultrices semper, ligula arcu tristique sapien, a accumsan nisi
-                  mauris ac eros. In dui magna, posuere eget, vestibulum et,
-                  tempor auctor, justo.
-                </p>
-
-                <p class="mb-0">
-                  Cras sagittis. Phasellus nec sem in justo pellentesque
-                  facilisis. Proin sapien ipsum, porta a, auctor quis, euismod
-                  ut, mi. Donec quam felis, ultricies nec, pellentesque eu,
-                  pretium quis, sem. Nam at tortor in tellus interdum sagittis.
-                </p>
-              </v-card-text>
+              <v-card-text> swag </v-card-text>
             </v-card>
           </v-tab-item>
         </v-tabs>
+        <div v-else class="d-flex justify-center align-center flex-column">
+          <img src="noresults.jpg" width="50%" />
+          <p class="text-center mt-3 font-weight-black grey--text">
+            No Scan Results
+          </p>
+        </div>
       </v-card>
     </v-container>
   </div>
@@ -176,17 +148,40 @@ export default {
       target: "",
       type: 0,
     },
+    portHeaders: [
+      {
+        text: 'Open Port',
+        value: 'port',
+        align: 'start'
+      },
+      {
+        text: 'Protocol',
+        value: 'protocol',
+        align: 'start'
+      },
+      {
+        text: 'Service',
+        value: 'service',
+        align: 'start'
+      },
+      {
+        text: 'Method of detection',
+        value: 'method',
+        align: 'start'
+      }
+    ],
+    result: null,
     loading: false,
     scanTypes: [
       {
         type: 0,
-        name: 'Full Scan'
-      }, 
+        name: "Full Scan",
+      },
       {
         type: 1,
-        name: 'OS and Port Scan'
-      }
-    ]
+        name: "OS and Port Scan",
+      },
+    ],
   }),
   mounted() {
     this.bindIpcListeners();
@@ -195,12 +190,13 @@ export default {
     startScan() {
       this.loading = true;
       window.api.startNmapScan({
-        ...this.scan
+        ...this.scan,
       });
     },
     bindIpcListeners() {
-      window.api.onNmapScanFinish((event, args) => {
-        console.log(args);
+      window.api.onNmapScanFinish((event, result) => {
+        this.loading = false;
+        this.result = result;
       });
     },
   },
@@ -208,4 +204,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.port-icon {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: #7ddf53;
+}
 </style>
