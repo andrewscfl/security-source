@@ -4,6 +4,8 @@ import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+import { handleFullScan } from '../utils/nmap'
+
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -68,8 +70,21 @@ app.on('ready', async () => {
   }
 
   // IPC handlers
-  ipcMain.on('start-nmap-scan', (event, args) => {
-    console.log(args)
+  ipcMain.on('start-nmap-scan', async (event, args) => {
+    // invoke nmap scan on main thread
+    try {
+      console.log(args)
+      const { target, type } = args
+      if (!target || type === undefined) throw new Error("no target or type");
+      const result = await handleFullScan(target)
+      console.log('----- RESULT ------')
+      console.log(result)
+    } catch (error) {
+      console.log('THROW ERROR')
+      console.log(error)
+    }
+
+
   })
 
 

@@ -2,7 +2,7 @@
   <div class="pa-5">
     <v-container>
       <v-card class="mb-5">
-        <v-toolbar flat class="grey lighten-4">
+        <v-toolbar flat class="grey lighten-4 fill-width">
           <div class="d-flex justify-space-between fill-width">
             <div>
               <h1 class="ma-0 pa-0 gradient-text">Scan A Network</h1>
@@ -20,6 +20,7 @@
                 persistent-placeholder
                 label="Target"
                 block
+                v-model="scan.target"
                 hide-details
               ></v-text-field>
             </v-col>
@@ -29,6 +30,10 @@
                 persistent-placeholder
                 label="Scan Type"
                 hide-details
+                :items="scanTypes"
+                item-text="name"
+                item-value="type"
+                v-model="scan.type"
               ></v-select>
             </v-col>
             <v-col cols="12">
@@ -49,6 +54,7 @@
             elevation="0"
             class="gradient-bg white--text font-weight-black"
             large
+            @click="startScan"
             >Scan Network</v-btn
           >
         </v-card-actions>
@@ -57,18 +63,18 @@
         <v-toolbar flat class="grey lighten-4">
           <h1 class="ma-0 pa-0 gradient-text">Scan Results</h1>
         </v-toolbar>
-        <v-tabs vertical>
+        <v-tabs vertical class="text-left">
           <v-tab>
-            <v-icon left> mdi-account </v-icon>
-            Option 1
+            <v-icon left> mdi-server-network </v-icon>
+            Scan Results
           </v-tab>
           <v-tab>
-            <v-icon left> mdi-lock </v-icon>
-            Option 2
+            <v-icon left> mdi-console </v-icon>
+            Console Output
           </v-tab>
           <v-tab>
-            <v-icon left> mdi-access-point </v-icon>
-            Option 3
+            <v-icon left> mdi-information-outline </v-icon>
+            Suggestions
           </v-tab>
 
           <v-tab-item>
@@ -170,7 +176,17 @@ export default {
       target: "",
       type: 0,
     },
-    loading: false
+    loading: false,
+    scanTypes: [
+      {
+        type: 0,
+        name: 'Full Scan'
+      }, 
+      {
+        type: 1,
+        name: 'OS and Port Scan'
+      }
+    ]
   }),
   mounted() {
     this.bindIpcListeners();
