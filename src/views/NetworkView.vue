@@ -1,6 +1,15 @@
 <template>
   <div class="pa-5">
     <v-container>
+      <div class="d-flex justify-space-between mb-5">
+        <div>
+          <h1 class="gradient-text">Network Scanning</h1>
+          <p>Utilize Security Source to more easily operate and better understand NMAP</p>
+        </div>
+        <div class="d-flex align-center">
+          <v-btn class="elevation-0 gradient-bg mb-5 white--text font-weight-black" large>Verify NMAP installation</v-btn>
+        </div>
+      </div>
       <v-alert border="left" color="error" dark>
         <div class="d-flex">
           <div><v-icon class="mr-2">mdi-information-outline</v-icon></div>

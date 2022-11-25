@@ -1,6 +1,7 @@
 import axios from 'axios'
 export default class {
     static token = null
+    static baseUrl = null
     constructor(){
         this.axios = axios
         this.baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : localStorage.getItem('baseUrl') || 'https://api.securitysource.io'

@@ -5,12 +5,14 @@ import VueRouter from 'vue-router';
 import HomeView from './views/HomeView.vue'
 import AboutView from './views/AboutView.vue'
 import NetworkView from './views/NetworkView.vue'
+import PhishingView from './views/PhishingView'
 Vue.use(VueRouter);
 const router = new VueRouter({
   routes: [
     { path: '/', component: HomeView },
     { path: '/about', component: AboutView },
-    { path: '/network', component: NetworkView }
+    { path: '/network', component: NetworkView },
+    { path: '/phishing', component: PhishingView }
   ]
 });
 

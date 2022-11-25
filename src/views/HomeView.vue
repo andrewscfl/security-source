@@ -1,6 +1,20 @@
 <template>
   <div>
     <v-container class="pa-5">
+      <div class="d-flex justify-space-between pb-5">
+        <div>
+          <h1 class="gradient-text">Security Source Dashboard</h1>
+          <p>Account overview for all things Cyber Security Related</p>
+        </div>
+        <div class="d-flex align-center">
+          <v-btn
+            class="elevation-0 gradient-bg mb-5 white--text font-weight-black"
+            large
+            @click="getInfo"
+            >Reload Now</v-btn
+          >
+        </div>
+      </div>
       <v-row>
         <v-col cols="4">
           <statistic-card
@@ -45,13 +59,15 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          <apex-chart
-            width="100%"
-            height="400px"
-            type="bar"
-            :options="chart.options"
-            :series="chart.series"
-          />
+          <v-card class="pa-5">
+            <apex-chart
+              width="100%"
+              height="400px"
+              type="bar"
+              :options="chart.options"
+              :series="chart.series"
+            />
+          </v-card>
         </v-col>
       </v-row>
     </v-container>

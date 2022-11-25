@@ -6,7 +6,7 @@
                 <p class="pb-0 mb-0 font-weight-bold grey--text">Security Source</p>
             </div>
             <div>
-                <p class="pb-0 mb-0 text-right grey--text">v.0.0.1</p>
+                <p class="pb-0 mb-0 text-right grey--text">Alpha v.0.0.1</p>
             </div>
         </div>
     </v-app-bar>
