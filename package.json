@@ -13,10 +13,14 @@
   },
   "main": "background.js",
   "dependencies": {
+    "apexcharts": "^3.36.3",
     "axios": "^1.2.0",
     "core-js": "^3.8.3",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "node-nmap": "^4.0.0",
     "vue": "^2.6.14",
+    "vue-apexcharts": "^1.6.2",
     "vue-router": "3",
     "vuetify": "^2.6.0"
   },

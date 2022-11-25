@@ -29,9 +29,6 @@ export default {
     token: null,
   }),
   mounted() {
-    //remove after initial mutate
-    // localStorage.setItem('token','lolfaketoken')
-    //remove after intial mutate
     this.getToken();
     this.bindLogoutWatcher();
   },
