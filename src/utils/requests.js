@@ -4,7 +4,7 @@ export default class {
     static baseUrl = null
     constructor(){
         this.axios = axios
-        this.baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : localStorage.getItem('baseUrl') || 'https://api.securitysource.io'
+        this.baseUrl = /* 'http://localhost:5000'  */'https://api.securitysource.io'
         this.token = localStorage.getItem('token')
         this.token ? this.axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token : this.axios.defaults.headers.common['Authorization'] = null
         this.get =  this.axios.get
