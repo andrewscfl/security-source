@@ -9,5 +9,8 @@ contextBridge.exposeInMainWorld("api", {
     },
     onNmapScanFinish: function (func) {
         ipcRenderer.on("finish-nmap-scan", (event, ...args) => func(event, ...args));
+    },
+    onNmapScanError: function(func) {
+        ipcRenderer.on('error-nmap-scan', (event) => func(event))
     }
 });

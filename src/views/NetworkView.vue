@@ -4,10 +4,17 @@
       <div class="d-flex justify-space-between mb-5">
         <div>
           <h1 class="gradient-text">Network Scanning</h1>
-          <p>Utilize Security Source to more easily operate and better understand NMAP</p>
+          <p>
+            Utilize Security Source to more easily operate and better understand
+            NMAP
+          </p>
         </div>
         <div class="d-flex align-center">
-          <v-btn class="elevation-0 gradient-bg mb-5 white--text font-weight-black" large>Verify NMAP installation</v-btn>
+          <v-btn
+            class="elevation-0 gradient-bg mb-5 white--text font-weight-black"
+            large
+            >Verify NMAP installation</v-btn
+          >
         </div>
       </div>
       <v-alert border="left" color="error" dark>
@@ -60,6 +67,7 @@
                 label="nmap command"
                 block
                 hide-details
+                :value="scan.target ? `nmap -A -Pn ${scan.target}` : ''"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -119,10 +127,12 @@
                         >
                           <template #[`item.port`]="{ item }">
                             <div class="d-flex">
-                              <div class="mr-2 d-flex justify-center align-center">
+                              <div
+                                class="mr-2 d-flex justify-center align-center"
+                              >
                                 <div class="port-icon"></div>
                               </div>
-                              <div>{{item.port}}</div>
+                              <div>{{ item.port }}</div>
                             </div>
                           </template>
                         </v-data-table>
@@ -131,11 +141,6 @@
                   </div>
                 </template>
               </v-card-text>
-            </v-card>
-          </v-tab-item>
-          <v-tab-item>
-            <v-card flat>
-              <v-card-text> swag </v-card-text>
             </v-card>
           </v-tab-item>
         </v-tabs>
@@ -147,10 +152,34 @@
         </div>
       </v-card>
     </v-container>
+    <v-dialog v-model="error" max-width="500px">
+      <v-card>
+        <v-card-text class="pa-5">
+          <div class="d-flex justify-center mb-0">
+            <v-icon large>mdi-information-outline</v-icon>
+          </div>
+          <h2 class="text-center mt-5 mb-2">
+            Ensure you have the NMAP CLI installed and you are scanning a valid ip address or host
+          </h2>
+          <p class="text-center">
+            NMAP is a command line utility for port scanning that is free and
+            open source. Security Source provides an interface for this tool
+            which allows for more user friendly scanning and suggestions. If you
+            do not have the NMAP cli installed, you can download it
+            <a href="#" @click="openNmapDownload">here</a>.
+          </p>
+          <p class="text-center">
+            after downloading, restart Security Source to use the network
+            scanning portion of the application
+          </p>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
+
 export default {
   data: () => ({
     scan: {
@@ -159,36 +188,33 @@ export default {
     },
     portHeaders: [
       {
-        text: 'Open Port',
-        value: 'port',
-        align: 'start'
+        text: "Open Port",
+        value: "port",
+        align: "start",
       },
       {
-        text: 'Protocol',
-        value: 'protocol',
-        align: 'start'
+        text: "Protocol",
+        value: "protocol",
+        align: "start",
       },
       {
-        text: 'Service',
-        value: 'service',
-        align: 'start'
+        text: "Service",
+        value: "service",
+        align: "start",
       },
       {
-        text: 'Method of detection',
-        value: 'method',
-        align: 'start'
-      }
+        text: "Method of detection",
+        value: "method",
+        align: "start",
+      },
     ],
     result: null,
     loading: false,
+    error: false,
     scanTypes: [
       {
         type: 0,
         name: "Full Scan",
-      },
-      {
-        type: 1,
-        name: "OS and Port Scan",
       },
     ],
   }),
@@ -196,6 +222,9 @@ export default {
     this.bindIpcListeners();
   },
   methods: {
+    openNmapDownload() {
+      window.open("https://nmap.org/download");
+    },
     startScan() {
       this.loading = true;
       window.api.startNmapScan({
@@ -206,6 +235,10 @@ export default {
       window.api.onNmapScanFinish((event, result) => {
         this.loading = false;
         this.result = result;
+      });
+      window.api.onNmapScanError(() => {
+        this.error = true;
+        this.loading = false
       });
     },
   },

@@ -79,7 +79,7 @@ app.on('ready', async () => {
       const result = await handleFullScan(target)
       event.sender.send('finish-nmap-scan', result)
     } catch (error) {
-
+      event.sender.send('error-nmap-scan')
       console.log(error)
     }
 
