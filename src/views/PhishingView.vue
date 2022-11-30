@@ -34,26 +34,36 @@
           </v-col>
         </v-row>
         <v-card>
-          <v-tabs  v-model="currentTest">
-            <v-tab v-for="(item, idx) in tests" :key="idx">Phishing Test #{{ item.id }}</v-tab>
-          </v-tabs>
-          <v-card-text>
-            <v-tabs-items v-model="currentTest">
-              <v-tab-item v-for="(item, idx) in tests" :key="idx">
-                <v-data-table
-                  :headers="phishingTableHeaders"
-                  :items="item.Entry"
-                >
-                  <template #[`item.status`]>
-                    <p class="red--text mb-0 font-weight-bold">FAILED</p>
-                  </template>
-                  <template #[`item.timestamp`]>
-                    {{ item.timestamp | formatTime }}
-                  </template>
-                </v-data-table>
-              </v-tab-item>
-            </v-tabs-items>
-          </v-card-text>
+          <template v-if="tests.length > 0">
+            <v-tabs v-model="currentTest">
+              <v-tab v-for="(item, idx) in tests" :key="idx"
+                >Phishing Test #{{ item.id }}</v-tab
+              >
+            </v-tabs>
+            <v-card-text>
+              <v-tabs-items v-model="currentTest">
+                <v-tab-item v-for="(item, idx) in tests" :key="idx">
+                  <v-data-table
+                    :headers="phishingTableHeaders"
+                    :items="item.Entry"
+                  >
+                    <template #[`item.status`]>
+                      <p class="red--text mb-0 font-weight-bold">FAILED</p>
+                    </template>
+                    <template #[`item.timestamp`]>
+                      {{ item.timestamp | formatTime }}
+                    </template>
+                  </v-data-table>
+                </v-tab-item>
+              </v-tabs-items>
+            </v-card-text>
+          </template>
+          <div v-else class="d-flex justify-center align-center flex-column">
+            <img src="noresults.jpg" width="50%" />
+            <p class="text-center mt-3 font-weight-black grey--text">
+              No Phishing Tests
+            </p>
+          </div>
         </v-card>
       </div>
     </v-container>
@@ -74,7 +84,7 @@
             hide-details
             outlined
             append-outer-icon="mdi-close"
-            @click:append-outer="create.emails.splice(idx,1)"
+            @click:append-outer="create.emails.splice(idx, 1)"
           ></v-text-field>
           <div class="d-flex justify-center align-center">
             <v-btn icon @click="create.emails.push('')" class="mt-5">
@@ -109,6 +119,7 @@ export default {
       open: false,
       emails: [""],
       loading: false,
+      intervalPull: null
     },
     info: null,
     tests: [],
@@ -138,6 +149,10 @@ export default {
   }),
   mounted() {
     this.getInfo();
+    this.intervalPull = setInterval(()=> this.getInfo(), 30 * 1000)
+  },
+  destroyed() {
+    clearInterval(this.intervalPull)
   },
   computed: {
     baseUrl() {
@@ -167,22 +182,21 @@ export default {
     mapTests(data) {
       if (data && data.Test && Array.isArray(data.Test)) this.tests = data.Test;
     },
-    async sendPhishingTest(){
+    async sendPhishingTest() {
       try {
-        this.create.loading = true
-        const requests = new Requests()
-        const bccList = [...new Set([...this.create.emails].filter(x => x))]
-        const response = requests.post('/api/phishing/create-phishing-exam', {
-          bccList
-        })
-        console.log(response)
-        this.create.loading = false
-        this.create.open = false
-
+        this.create.loading = true;
+        const requests = new Requests();
+        const bccList = [...new Set([...this.create.emails].filter((x) => x))];
+        const response = requests.post("/api/phishing/create-phishing-exam", {
+          bccList,
+        });
+        console.log(response);
+        this.create.loading = false;
+        this.create.open = false;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    },
   },
 };
 </script>

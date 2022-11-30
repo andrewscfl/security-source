@@ -62,7 +62,7 @@ export default {
           icon: "mdi-access-point-network",
           path: "/network",
         },
-        { title: "Trojans", icon: "mdi-shield-bug", path: "/trojans" },
+        { title: "Trojans", icon: "mdi-shield-bug", path: "/malware" },
         { title: "Help", icon: "mdi-help-circle", path: "/about" },
       ],
       mini: true,
