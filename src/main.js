@@ -7,6 +7,7 @@ import AboutView from './views/AboutView.vue'
 import NetworkView from './views/NetworkView.vue'
 import PhishingView from './views/PhishingView'
 import MalwareView from './views/MalwareView'
+
 Vue.use(VueRouter);
 const router = new VueRouter({
   routes: [
@@ -14,7 +15,7 @@ const router = new VueRouter({
     { path: '/about', component: AboutView },
     { path: '/network', component: NetworkView },
     { path: '/phishing', component: PhishingView },
-    { path: '/malware', component: MalwareView}
+    { path: '/malware', component: MalwareView},
   ]
 });
 
