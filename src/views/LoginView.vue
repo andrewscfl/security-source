@@ -20,6 +20,7 @@
               outlined
               persistent-placeholder
               label="Password"
+              type="password"
               class="my-5"
               hide-details
               block
@@ -56,6 +57,7 @@
               outlined
               persistent-placeholder
               label="Password"
+              type="password"
               class="my-5"
               hide-details
               block
@@ -65,6 +67,7 @@
               outlined
               persistent-placeholder
               label="Confirm Password"
+              type="password"
               class="my-5"
               hide-details
               block
@@ -86,7 +89,7 @@
               @click="registerAccount"
               :class="{ shake: failedRegister }"
               :disabled="failedRegister"
-              >Login</v-btn
+              >Register</v-btn
             >
             <p class="red--text" v-if="failedRegister">{{errorMessage}}</p>
 
